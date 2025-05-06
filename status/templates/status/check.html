@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>secre up - website status checker</title>
+
+  {% load static %}
+  <!-- Favicon - Multiple sizes for different platforms -->
+  <link rel="icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}" />
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}" />
+
+  <!-- Google Fonts - Retro/cyberpunk style fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Oxanium:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- CSS Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+  <!-- Main container for the application -->
+  <div class="container app-container">
+    <!-- Central card with terminal-inspired design -->
+    <div class="card mx-auto" style="max-width: 600px;">
+      <!-- Card header designed like a terminal window title bar -->
+      <div class="card-header">
+        <!-- Robot icon with application name -->
+        <i class="fas fa-robot me-2"></i> SECRE_UP.exe
+        <!-- Tagline styled as system information -->
+        <div class="tagline">system: website status checker v1.0</div>
+        <!-- ASCII-art style instructions box -->
+        <div class="intro-text">
+            > ENTER TARGET URL FOR SCAN SEQUENCE
+            > SYSTEM WILL ANALYZE CONNECTION STATUS
+            > AWAITING INPUT...
+        </div>
+      </div>
+      <!-- Card body containing the form and results -->
+      <div class="card-body">
+        <!-- Begin URL submission form -->
+        <!-- This form handles user input and submits via POST to the check_status view -->
+        <form id="url-form" method="POST">
+          {% csrf_token %}  <!-- Django security token to prevent Cross-Site Request Forgery -->
+          <div class="input-wrapper">
+            <label for="id_url" class="form-label">Enter Website URL</label>
+            <div class="position-relative">
+              {{ form.url }}  <!-- Django form field from WebsiteForm in forms.py -->
+              <i class="fas fa-globe input-icon" id="url-icon"></i>  <!-- Icon that changes based on validation status -->
+            </div>
+            <!-- Helper text for user guidance -->
+            <small class="form-text"><i class="fas fa-info-circle me-1"></i>Example: reddit.com</small>
+          </div>
+          <!-- Submit button with loading animation that appears during processing -->
+          <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" id="submit-btn">
+            <i class="fas fa-radar me-2"></i> Check Status
+            <!-- Loading animation dots - Hidden by default, shown during form submission via JavaScript -->
+            <div id="loading-spinner" class="loading-dots ms-3" style="display: none;">
+              <div class="dot"></div>  <!-- Individual loading dot -->
+              <div class="dot"></div>  <!-- Animation delay applied in CSS -->
+              <div class="dot"></div>  <!-- Creates bouncing effect -->
+            </div>
+          </button>
+        </form>
+
+        <!-- Conditional section - Only displayed after a URL has been checked -->
+        {% if url %}
+        <!-- Status result container - Changes style based on UP/DOWN status -->
+        <div id="status-container" class="status-message {% if status == 'UP' %}status-up{% else %}status-down{% endif %}">
+          <div>
+            <!-- Icon indicating success or failure -->
+            <i class="status-icon {% if status == 'UP' %}fas fa-circle-check{% else %}fas fa-circle-exclamation{% endif %}"></i>
+            <!-- Display the checked URL and its status -->
+            <span class="website-url">{{ url }}</span> is <strong>{{ status }}</strong>
+          </div>
+          <!-- Fun message container - Text is replaced by JavaScript with a random message -->
+          <div class="fun-message" id="fun-message">
+            <!-- Initial placeholder that will be replaced by JavaScript -->
+            {% if status == 'UP' %}
+            Site is up and running!
+            {% else %}
+            Site appears to be down.
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JavaScript bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JavaScript for form validation and animations -->
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
