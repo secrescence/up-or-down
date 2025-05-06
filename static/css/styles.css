@@ -1,0 +1,493 @@
+/* 
+ * CYBERPUNK THEME WEBSITE STATUS CHECKER
+ * This stylesheet implements a cyberpunk-inspired design with neon colors,
+ * pixel art aesthetics, and retro computer terminal feel.
+ */
+
+/* CSS Variables - Color scheme and design parameters */
+:root {
+  --primary: #00ff99;     /* Neon green - main brand color */
+  --primary-hover: #00cc77; /* Darker shade for hover states */
+  --secondary: #ff00aa;   /* Neon pink - accent color */
+  --success: #00ffff;     /* Cyan - indicates success/up status */
+  --danger: #ff003c;      /* Red - indicates error/down status */
+  --light: #222233;       /* Dark blue-gray - for backgrounds */
+  --dark: #00ffaa;        /* Bright green - for dark mode elements */
+  --bg-dark: #0a0a1f;     /* Very dark blue - main background */
+  --card-bg: #151528;     /* Slightly lighter blue - card background */
+  --card-shadow: 0 0 0 3px #00ff99, 0 0 0 6px #151528, 0 10px 30px rgba(0, 255, 153, 0.3); /* Multi-layer shadow for depth */
+  --transition: all 0.2s steps(3); /* Pixel-style transitions */
+  --pixel-size: 3px;      /* Standard size for pixel art elements */
+}
+
+/* Base body styling with cyberpunk-themed background pattern */
+body {
+  font-family: 'Oxanium', 'VT323', monospace; /* Sci-fi/terminal fonts */
+  /* SVG background pattern - subtle tech grid */
+  background: var(--bg-dark) url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23113366' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Scanline effect - horizontal line that moves down the screen */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success), var(--primary));
+  background-size: 400% 400%;
+  animation: scanline 3s infinite ease-in-out; /* Animation for the scanning effect */
+  z-index: 1000;
+}
+
+/* Keyframes for scanline animation - moves from top to bottom */
+@keyframes scanline {
+  0%, 100% {
+    opacity: 0.5;
+    top: 0;
+  }
+  50% {
+    opacity: 0.3;
+    top: 98%;
+  }
+}
+
+/* Main container padding */
+.app-container {
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+/* Main card styling - retro terminal look with pixelated border */
+.card {
+  border-radius: 0; /* Sharp corners for pixel art aesthetic */
+  border: var(--pixel-size) solid var(--primary);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow); /* Multi-layered glow effect */
+  overflow: visible;
+  transition: var(--transition); /* Stepped transition for pixel movement */
+  image-rendering: pixelated; /* Ensures crisp pixel rendering */
+  position: relative;
+}
+
+/* Decorative diamond shape in the top-right corner of card */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Diamond shape */
+  animation: blink 1.5s infinite; /* Blinking indicator effect */
+}
+
+/* Blinking animation for the diamond indicator */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Hover effect for card - shifts position and changes glow color */
+.card:hover {
+  box-shadow: 0 0 0 3px var(--secondary), 0 0 0 6px var(--card-bg), 0 10px 30px rgba(255, 0, 170, 0.3);
+  transform: translateY(-5px); /* Slight lift effect */
+}
+
+/* Card header styling - terminal window title bar */
+.card-header {
+  background: var(--light);
+  color: var(--primary);
+  border-bottom: var(--pixel-size) solid var(--primary);
+  font-family: 'Press Start 2P', cursive; /* Pixel font for headers */
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  text-shadow: 3px 3px 0 var(--bg-dark); /* Text shadow for depth */
+  letter-spacing: 2px;
+}
+
+/* Decorative star shape in the background of the header */
+.card-header::before {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: rgba(0, 255, 153, 0.1);
+  top: -50px;
+  right: -50px;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); /* Star shape */
+}
+
+/* Animated horizontal scan line at bottom of header */
+.card-header::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  bottom: 0;
+  left: 0;
+  animation: scan 4s infinite linear; /* Horizontal scanning animation */
+}
+
+/* Horizontal scanning animation keyframes */
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Styling for the tagline under the main header */
+.tagline {
+  font-size: 0.8rem;
+  font-family: 'VT323', monospace; /* Terminal font */
+  font-weight: 400;
+  margin-top: 1rem;
+  opacity: 0.9;
+  color: var(--success);
+  font-size: 1.5rem;
+}
+
+/* Terminal-style intro text box */
+.intro-text {
+  background-color: rgba(0, 255, 153, 0.1);
+  border: 2px solid var(--primary);
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: 'VT323', monospace;
+  color: #ffffff;
+  position: relative;
+  border-left: 10px solid var(--primary); /* Left border accent */
+}
+
+/* Main content area styling */
+.card-body {
+  padding: 2rem;
+  position: relative;
+}
+
+/* Decorative corner accent on bottom-right of card body */
+.card-body::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid var(--primary);
+  border-right: none;
+  border-top: none;
+  opacity: 0.5;
+}
+
+/* Form input container */
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* Form label styling - pixelated header font */
+.form-label {
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  display: block;
+  color: var(--primary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+/* Form input styling - terminal-style input field */
+.form-control {
+  border-radius: 0;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--primary);
+  font-family: 'VT323', monospace;
+  font-size: 1.3rem;
+  transition: var(--transition);
+  background-color: var(--light);
+  color: white;
+  box-shadow: 4px 4px 0 rgba(0, 255, 153, 0.3);
+}
+
+/* Focus state for input */
+.form-control:focus {
+  border-color: var(--secondary);
+  box-shadow: 4px 4px 0 rgba(255, 0, 170, 0.3);
+  outline: none;
+}
+
+/* Valid input state styling */
+.form-control.is-valid {
+  border-color: var(--success);
+  background-image: none;
+  padding-right: 1rem;
+}
+
+/* Invalid input state styling */
+.form-control.is-invalid {
+  border-color: var(--danger);
+  background-image: none;
+  padding-right: 1rem;
+}
+
+/* Icon inside input field */
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  transition: var(--transition);
+}
+
+/* Helper text below input */
+.form-text {
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  color: #8d97b0;
+}
+
+/* Primary button styling - cyberpunk green */
+.btn-primary {
+  background: var(--primary);
+  color: var(--bg-dark);
+  border: none;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 500;
+  padding: 0.85rem 1rem;
+  border-radius: 0;
+  transition: var(--transition);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+/* Left angle bracket that appears on hover */
+.btn-primary::before {
+  content: '<';
+  position: absolute;
+  left: 10px;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+/* Right angle bracket that appears on hover */
+.btn-primary::after {
+  content: '>';
+  position: absolute;
+  right: 10px;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+/* Button hover effects */
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* Show angle brackets on hover */
+.btn-primary:hover::before,
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+/* Button active/pressed state */
+.btn-primary:active {
+  transform: translate(0px, 0px);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Loading animation dots container */
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Individual loading animation dot */
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--bg-dark);
+  image-rendering: pixelated;
+  animation: bounce 0.6s infinite steps(3); /* Stepped animation for pixel effect */
+}
+
+/* Staggered animation timing for dots */
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Bouncing animation for loading dots */
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Error message styling */
+.invalid-feedback {
+  display: none;
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  color: var(--danger);
+}
+
+/* Show error message when input is invalid */
+.form-control.is-invalid ~ .invalid-feedback {
+  display: block;
+  animation: glitch 0.3s steps(2) forwards; /* Glitch animation for error */
+}
+
+/* Status message container */
+.status-message {
+  border-radius: 0;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  animation: glitch 0.5s steps(2) forwards; /* Glitch-in animation */
+  border: 2px solid;
+}
+
+/* Glitch effect animation */
+@keyframes glitch {
+  0% {
+    transform: translate(-10px, 10px);
+    opacity: 0;
+  }
+  25% {
+    transform: translate(10px, -10px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-5px, 5px);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+/* Blinking border animation */
+@keyframes blink-border {
+  0%, 100% {
+    border-color: currentColor;
+  }
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Success/UP status styling */
+.status-up {
+  background-color: rgba(0, 255, 255, 0.15);
+  color: var(--success);
+  border-color: var(--success);
+  animation: blink-border 2s infinite steps(2); /* Slow blinking border */
+}
+
+/* Error/DOWN status styling */
+.status-down {
+  background-color: rgba(255, 0, 60, 0.15);
+  color: var(--danger);
+  border-color: var(--danger);
+  animation: blink-border 1s infinite steps(2); /* Fast blinking border */
+}
+
+/* Icon in status message */
+.status-icon {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Fun message styling below status */
+.fun-message {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 1.2rem;
+  font-style: italic;
+  opacity: 0.85;
+  font-family: 'VT323', monospace;
+}
+
+/* Website URL in status message */
+.website-url {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  letter-spacing: 1px;
+}
+
+/* Ensuring icons render pixelated for the retro look */
+.fas {
+  image-rendering: pixelated;
+}
+
+/* Pixel-art style corners for elements with this class */
+.pixel-corners {
+  clip-path: polygon(
+    0% 10px, 10px 0%, calc(100% - 10px) 0%, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px)
+  );
+}
+
+/* Neon text glow effect */
+.neon-glow {
+  text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary), 0 0 20px var(--primary);
+}
+
+/* Floating animation for robot icons */
+@keyframes robot-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Applied to robot icons to make them float */
+.robot-float {
+  animation: robot-float 3s ease-in-out infinite;
+  display: inline-block;
+}
